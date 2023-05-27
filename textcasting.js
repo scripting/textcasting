@@ -1,4 +1,4 @@
-const myVersion = "0.4.7", myProductName = "textcasting"; 
+const myVersion = "0.4.8", myProductName = "textcasting"; 
 
 exports.start = start; 
 
