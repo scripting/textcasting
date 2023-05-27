@@ -1,0 +1,12 @@
+{
+	"name": "test",
+	"description": "Bare bones demo app for textcasting package.",
+	"author": "Dave Winer <dave@scripting.com>",
+	"license": "MIT",
+	"version": "0.4.0",
+	"dependencies" : {
+		"daveutils": "*",
+		"request": "*",
+		"textcasting": "*"
+		} 
+	}
