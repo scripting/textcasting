@@ -1,0 +1,13 @@
+{
+	"name": "textcasting",
+	"description": "An HTTP server that can post messages to Mastodon, Bluesky and WordPress via REST call.",
+	"version": "0.4.0",
+	"main": "textcasting.js",
+	"dependencies" : {
+		"daveutils": "*",
+		"request": "*",
+		"websocket": "*",
+		"reallysimple": "*",
+		"wordpress": "*"
+		} 
+	}
