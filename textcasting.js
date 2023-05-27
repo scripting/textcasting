@@ -12,6 +12,7 @@ const davehttp = require ("davehttp");
 const qs = require ("querystring"); 
 
 var config = {
+	userAgent: myProductName + "/" + myVersion,
 	dataFolder: "data/textcasting/",
 	port: process.env.PORT || 1422,
 	flPostEnabled: true,
@@ -37,7 +38,167 @@ function writeStats () {
 			});
 		});
 	}
+function getStringBytes (theString) { //5/17/23 by DW
+	const ctbytes = Buffer.byteLength (theString);
+	return (ctbytes);
+	}
 
+function postToBluesky (params, callback) {
+	const maxCtChars = 300;
+	function getAccessToken (options, callback) {
+		const url = options.urlsite + "xrpc/com.atproto.server.createSession";
+		const bodystruct = {
+			identifier: options.mailaddress,
+			password: options.password
+			};
+		var theRequest = {
+			method: "POST",
+			url: url,
+			body: utils.jsonStringify (bodystruct),
+			headers: {
+				"User-Agent": config.userAgent,
+				"Content-Type": "application/json"
+				}
+			};
+		request (theRequest, function (err, response, body) { 
+			var jstruct = undefined;
+			if (err) {
+				callback (err);
+				}
+			else {
+				try {
+					callback (undefined, JSON.parse (body));
+					}
+				catch (err) {
+					callback (err);
+					}
+				}
+			});
+		}
+	function newPost (options, authorization, item, callback) {
+		const url = options.urlsite + "xrpc/com.atproto.repo.createRecord";
+		const nowstring = new Date ().toISOString ();
+		
+		function notEmpty (s) {
+			if (s === undefined) {
+				return (false);
+				}
+			if (s.length == 0) {
+				return (false);
+				}
+			return (true);
+			}
+		function decodeForBluesky (s) {
+			s = utils.decodeXml (s); //5/20/23 by DW
+			var replacetable = { 
+				"#39": "'"
+				};
+			s = utils.multipleReplaceAll (s, replacetable, true, "&", ";");
+			return (s);
+			}
+		function getStatusText (item) { //special for bluesky, just get the text, no link
+			var statustext = "";
+			function add (s) {
+				statustext += s;
+				}
+			function addText (desc) {
+				desc = decodeForBluesky (desc); 
+				desc = utils.trimWhitespace (utils.stripMarkup (desc));
+				if (desc.length > 0) {
+					const maxcount = maxCtChars - (statustext.length + desc.length + 2); //the 2 is for the two newlines after the description
+					desc = utils.maxStringLength (desc, maxcount, false, true) + "\n\n";
+					add (desc);
+					}
+				}
+			if (notEmpty (item.title)) {
+				addText (item.title);
+				}
+			else {
+				addText (item.description);
+				}
+			return (statustext);
+			}
+		function getRecord (item) {
+			var theRecord = {
+				text: getStatusText (item),
+				createdAt: nowstring
+				}
+			if (notEmpty (item.link)) {
+				const linkword = utils.getDomainFromUrl (item.link);
+				theRecord.text += linkword;
+				const ctbytes = getStringBytes (theRecord.text); //5/16/23 by DW
+				theRecord.facets = [
+					{
+						features: [
+							{
+								uri: item.link,
+								"$type": "app.bsky.richtext.facet#link"
+								}
+							],
+						index: {
+							byteStart: ctbytes - linkword.length, //5/16/23 by DW
+							byteEnd: ctbytes
+							}
+						}
+					];
+				}
+			console.log ("bluesky/getRecord: theRecord == " + utils.jsonStringify (theRecord));
+			return (theRecord);
+			}
+		
+		const bodystruct = {
+			repo: authorization.did,
+			collection: "app.bsky.feed.post",
+			validate: true,
+			record: getRecord (item)
+			};
+		var theRequest = {
+			method: "POST",
+			url: url,
+			body: utils.jsonStringify (bodystruct),
+			headers: {
+				"User-Agent": config.userAgent,
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + authorization.accessJwt
+				}
+			};
+		request (theRequest, function (err, response, body) { 
+			if (err) {
+				callback (err);
+				}
+			else {
+				try {
+					callback (undefined, JSON.parse (body));
+					}
+				catch (err) {
+					callback (err);
+					}
+				}
+			});
+		}
+	getAccessToken (params, function (err, authorization) {
+		if (err) {
+			console.log ("postToBluesky: err.message == " + err.message);
+			callback (err);
+			}
+		else {
+			const item = {
+				title: params.title,
+				description: params.description,
+				link: params.link
+				}
+			newPost (params, authorization, item, function (err, data) {
+				if (err) {
+					console.log ("postToBluesky: err.message == " + err.message);
+					callback (err);
+					}
+				else {
+					callback (undefined, data);
+					}
+				});
+			}
+		});
+	}
 function postToWordpress (params, callback) {
 	const client = wordpress.createClient ({
 		url: params.urlsite,
@@ -150,6 +311,9 @@ function handleHttpRequest (theRequest) {
 		case "POST":
 			const postparams = qs.parse (theRequest.postBody);
 			switch (theRequest.lowerpath) {
+				case "/bluesky":
+					postToBluesky (postparams, httpReturn);
+					return (true);
 				case "/wordpress":
 					postToWordpress (postparams, httpReturn);
 					return (true);
