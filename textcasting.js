@@ -1,4 +1,4 @@
-const myVersion = "0.6.4", myProductName = "textcasting"; 
+const myVersion = "0.4.1", myProductName = "textcasting"; 
 
 const fs = require ("fs");
 const request = require ("request");
