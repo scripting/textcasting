@@ -1,4 +1,4 @@
-const myVersion = "0.4.8", myProductName = "textcasting"; 
+const myVersion = "0.4.9", myProductName = "textcasting";  
 
 exports.start = start; 
 
@@ -16,10 +16,10 @@ var config = {
 	dataFolder: "data/textcasting/",
 	port: process.env.PORT || 1422,
 	flPostEnabled: true,
+	flAllowAccessFromAnywhere: true, 
 	flLogToConsole: true, //davehttp logs each request to the console
 	flTraceOnError: false //davehttp does not try to catch the error
 	};
-const fnameConfig = "config.json";
 
 var stats = {
 	ctHits: 0,
@@ -505,7 +505,6 @@ function handleHttpRequest (theRequest) {
 		}
 	}
 
-
 function everyMinute () {
 	}
 function everySecond () {
@@ -533,8 +532,10 @@ function readConfig (fname, data, callback) {
 	}
 
 function start (options) {
-	for (var x in options) {
-		config [x] = options [x];
+	if (options !== undefined) {
+		for (var x in options) {
+			config [x] = options [x];
+			}
 		}
 	console.log ("\n" + myProductName + " v" + myVersion + ": " + new Date ().toLocaleTimeString () + ", port == " + config.port + ".\n");
 	utils.runEveryMinute (everyMinute);

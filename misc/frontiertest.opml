@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<opml version="2.0">
+	<head>
+		<title>misc/frontiertest.opml</title>
+		<dateModified>Thu, 01 Jun 2023 13:50:20 GMT</dateModified>
+		<expansionState></expansionState>
+		<vertScrollState>1</vertScrollState>
+		<windowTop>300</windowTop>
+		<windowLeft>700</windowLeft>
+		<windowBottom>900</windowBottom>
+		<windowRight>1500</windowRight>
+		</head>
+	<body created="Wed, 31 May 2023 12:37:50 GMT" text="misc/frontiertest.opml">
+		<outline text="on testTextcasting ()">
+			<outline isComment="true" text="Changes">
+				<outline text="5/27/23; 10:17:06 AM by DW">
+					<outline text="Created."></outline>
+					</outline>
+				</outline>
+			<outline created="Sat, 27 May 2023 14:19:00 GMT" text=""></outline>
+			<outline created="Sat, 27 May 2023 14:18:27 GMT" isComment="true" text="local (url = &quot;http://localhost:1422/now&quot;)"></outline>
+			<outline isComment="true" text="local (val = tcp.httpReadUrl (url))"></outline>
+			<outline created="Sat, 27 May 2023 14:17:59 GMT" isComment="true" text="dialog.alert (val)"></outline>
+			<outline created="Sat, 27 May 2023 18:19:23 GMT" text=""></outline>
+			<outline created="Sat, 27 May 2023 14:18:27 GMT" text="local (url = &quot;http://localhost:1422/mastodon&quot;)"></outline>
+			<outline text="new (tabletype, @params)"></outline>
+			<outline text="params.urlsite = &quot;https://social.masto.land/&quot;"></outline>
+			<outline text="params.accesstoken = &quot;xxx&quot;"></outline>
+			<outline text="params.title = &quot;Time Loves a Hero (this is a test post)&quot;"></outline>
+			<outline text="params.description = &quot;Well they say time loves a hero, but only time will tell. If he's real he's a legend from heaven, if he ain't he was sent here from hell&quot;"></outline>
+			<outline text="params.link = &quot;https://genius.com/Little-feat-time-loves-a-hero-lyrics&quot;"></outline>
+			<outline created="Sat, 27 May 2023 18:34:36 GMT" text="try {delete (@scratchpad.postresult)}"></outline>
+			<outline text="scratchpad.postresult = tcp.httpPost (url, @params)"></outline>
+			<outline created="Sat, 27 May 2023 14:18:54 GMT" text="scratchpad.postresult = JSON.compile (scratchpad.postresult, @scratchpad.postresult)"></outline>
+			<outline created="Sat, 27 May 2023 18:19:23 GMT" text=""></outline>
+			<outline created="Sat, 27 May 2023 18:19:24 GMT" text="return;"></outline>
+			<outline created="Sat, 27 May 2023 20:22:27 GMT" text=""></outline>
+			<outline created="Sat, 27 May 2023 14:18:27 GMT" text="local (url = &quot;http://localhost:1422/bluesky&quot;)"></outline>
+			<outline text="new (tabletype, @params)"></outline>
+			<outline text="params.urlsite = &quot;https://bsky.social/&quot;"></outline>
+			<outline text="params.username = &quot;davew&quot;"></outline>
+			<outline text="params.mailaddress = &quot;dave.winer@gmail.com&quot;"></outline>
+			<outline text="params.password = &quot;xxx&quot;"></outline>
+			<outline created="Sat, 27 May 2023 18:21:35 GMT" text="params.title = &quot;This is just a test post&quot;"></outline>
+			<outline created="Sat, 27 May 2023 18:21:53 GMT" text="params.description = &quot;When I have nothing to say my lips are sealed. Say something once, why say it again.&quot;"></outline>
+			<outline created="Sat, 27 May 2023 18:22:12 GMT" text="params.link = &quot;https://en.wikipedia.org/wiki/Psycho_Killer&quot;"></outline>
+			<outline created="Sat, 27 May 2023 18:34:36 GMT" text="try {delete (@scratchpad.postresult)}"></outline>
+			<outline text="scratchpad.postresult = tcp.httpPost (url, @params)"></outline>
+			<outline created="Sat, 27 May 2023 14:18:54 GMT" text="scratchpad.postresult = JSON.compile (scratchpad.postresult, @scratchpad.postresult)"></outline>
+			<outline created="Sat, 27 May 2023 18:19:23 GMT" text=""></outline>
+			<outline created="Sat, 27 May 2023 18:19:23 GMT" text=""></outline>
+			<outline created="Sat, 27 May 2023 18:19:24 GMT" text="return;"></outline>
+			<outline created="Sat, 27 May 2023 18:19:24 GMT" text=""></outline>
+			<outline created="Sat, 27 May 2023 14:18:52 GMT" text=""></outline>
+			<outline created="Sat, 27 May 2023 14:18:27 GMT" text="local (url = &quot;http://localhost:1422/wordpress&quot;)"></outline>
+			<outline text="new (tabletype, @params)"></outline>
+			<outline isComment="true" text="urlsite, username, password, title, description, link"></outline>
+			<outline text="params.urlsite = &quot;https://unberkeley.wordpress.com&quot;"></outline>
+			<outline text="params.username = &quot;scripting&quot;"></outline>
+			<outline text="params.password = &quot;xxx&quot;"></outline>
+			<outline text="params.title = &quot;Would you like another test post?&quot;"></outline>
+			<outline text="params.description = &quot;There was a big tree in the middle of the stage. They had built the stage around it. There was a band playing, something lively and Texan, and I was thinking, I wonder if that tree even knows weÕre here. Can it sense the music, and the people, and the beers, and the relaxed mood?&quot;"></outline>
+			<outline text="params.link = &quot;https://www.desmoinesregister.com/story/news/2016/12/14/tree-iowa-middle-road/95417582/&quot;"></outline>
+			<outline text="scratchpad.postresult = tcp.httpPost (url, @params)"></outline>
+			<outline created="Sat, 27 May 2023 14:18:54 GMT" text="scratchpad.postresult = JSON.compile (scratchpad.postresult)"></outline>
+			<outline created="Sat, 27 May 2023 14:18:54 GMT" text=""></outline>
+			</outline>
+		<outline text="bundle //test code">
+			<outline text="testTextcasting ()"></outline>
+			</outline>
+		</body>
+	</opml>
