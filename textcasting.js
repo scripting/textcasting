@@ -1,4 +1,4 @@
-const myVersion = "0.4.9", myProductName = "textcasting";  
+const myVersion = "0.4.14", myProductName = "textcasting";  
 
 exports.start = start; 
 
@@ -122,7 +122,7 @@ function postToBluesky (params, callback) {
 				desc = decodeForBluesky (desc); 
 				desc = utils.trimWhitespace (utils.stripMarkup (desc));
 				if (desc.length > 0) {
-					const maxcount = maxCtChars - (statustext.length + desc.length + 2); //the 2 is for the two newlines after the description
+					const maxcount = maxCtChars - 2; //the 2 is for the two newlines after the description
 					desc = utils.maxStringLength (desc, maxcount, false, true) + "\n\n";
 					add (desc);
 					}
@@ -138,7 +138,8 @@ function postToBluesky (params, callback) {
 		function getRecord (item) {
 			var theRecord = {
 				text: getStatusText (item),
-				createdAt: nowstring
+				createdAt: nowstring,
+				reply: item.reply //6/11/23 by DW
 				}
 			if (notEmpty (item.link)) {
 				const linkword = utils.getDomainFromUrl (item.link);
@@ -199,10 +200,19 @@ function postToBluesky (params, callback) {
 			callback (err);
 			}
 		else {
+			var reply = undefined;
+			if (params.reply !== undefined) {
+				try {
+					reply = JSON.parse (params.reply);
+					}
+				catch (err) {
+					}
+				}
 			const item = {
 				title: params.title,
 				description: params.description,
-				link: params.link
+				link: params.link,
+				reply //6/11/23 by DW
 				}
 			newPost (params, authorization, item, function (err, data) {
 				if (err) {
