@@ -1,3 +1,19 @@
+#### 6/26/23; 6:43:24 PM by DW
+
+How to test textcasting locally
+
+* There's a <i>testing</i> sub-folder of the code folder. 
+
+* From that directory do: <i>node --inspect-brk test.js</i>
+
+#### 6/26/23; 6:24:59 PM by DW
+
+Here's how you update an existing post in textcasting. 
+
+Add <i>idPostToUpdate</i> to the post object with the value of the id of the post you want to update. 
+
+I'm going to use this in hooking Drummer up to WordPress. 
+
 #### 6/11/23; 4:06:00 PM by DW
 
 For Bluesky, allow the caller to specify the elements of a reply, root and parent.

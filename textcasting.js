@@ -1,4 +1,4 @@
-const myVersion = "0.4.14", myProductName = "textcasting";  
+const myVersion = "0.4.15", myProductName = "textcasting";  
 
 exports.start = start; 
 
@@ -243,6 +243,25 @@ function postToWordpress (params, callback) {
 				}
 			});
 		}
+	function editPost (client, title, content, link, idPostToUpdate, callback) { //6/26/23 by DW
+		if (link !== undefined) {
+			content += "\n\n" + link;
+			}
+		
+		const thePost = {
+			title, 
+			content,
+			status: "publish" //omit this to create a draft that isn't published
+			};
+		client.editPost (idPostToUpdate, thePost, function (err) {
+			if (err) {
+				callback (err);
+				}
+			else {
+				callback (undefined, true);
+				}
+			});
+		}
 	function newPost (client, title, content, link, callback) {
 		if (link !== undefined) {
 			content += "\n\n" + link;
@@ -270,16 +289,32 @@ function postToWordpress (params, callback) {
 			});
 		}
 	
-	newPost (client, params.title, params.description, params.link, function (err, thePost) {
-		if (err) {
-			console.log ("postToWordpress: err.message == " + err.message);
-			callback (err);
-			}
-		else {
-			console.log ("postToWordpress: thePost.link == " + thePost.link);
-			callback (undefined, thePost);
-			}
-		});
+	if (params.idPostToUpdate === undefined) { //6/26/23 by DW
+		newPost (client, params.title, params.description, params.link, function (err, thePost) {
+			if (err) {
+				console.log ("postToWordpress: err.message == " + err.message);
+				callback (err);
+				}
+			else {
+				console.log ("postToWordpress: thePost.link == " + thePost.link);
+				callback (undefined, thePost);
+				}
+			});
+		}
+	else {
+		editPost (client, params.title, params.description, params.link, params.idPostToUpdate, function (err, thePost) {
+			if (err) {
+				console.log ("postToWordpress: err.message == " + err.message);
+				callback (err);
+				}
+			else {
+				console.log ("postToWordpress: thePost.link == " + thePost.link);
+				callback (undefined, thePost);
+				}
+			});
+		}
+	
+	
 	}
 function postToMastodon (params, callback) {
 	const maxCtChars = 500;
