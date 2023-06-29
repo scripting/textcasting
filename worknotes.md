@@ -1,3 +1,25 @@
+6/29/23; 2:12:24 PM by DW
+
+You can now add an image to a post to Bluesky. 
+
+Two new params to pass:
+
+* "image" whose value is the bits of the image.
+
+* "imagetype" provides the mime type for the image
+
+It works! :-)
+
+* http://scripting.com/2023/06/29.html#a141303
+
+And having it in this package means its super easy to do from outside. 
+
+Example app is artToBluesky.
+
+#### 6/29/23; 12:04:48 PM by DW
+
+Added new interface function -- post, so you can post from a Node app, without going through the HTTP server. 
+
 #### 6/26/23; 6:43:24 PM by DW
 
 How to test textcasting locally

@@ -1,6 +1,7 @@
-const myVersion = "0.4.15", myProductName = "textcasting";  
+const myVersion = "0.4.16", myProductName = "textcasting";  
 
 exports.start = start; 
+exports.post = post; //6/29/23 by DW
 
 const fs = require ("fs");
 const request = require ("request");
@@ -92,6 +93,33 @@ function postToBluesky (params, callback) {
 				}
 			});
 		}
+	function uploadImage (options, authorization, callback) {
+		const url = options.urlsite + "xrpc/com.atproto.repo.uploadBlob";
+		var theRequest = {
+			method: "POST",
+			url: url,
+			body: options.image,
+			headers: {
+				"User-Agent": config.userAgent,
+				"Content-Type": options.imagetype,
+				"Authorization": "Bearer " + authorization.accessJwt
+				}
+			};
+		request (theRequest, function (err, response, body) { 
+			if (err) {
+				callback (err);
+				}
+			else {
+				try {
+					const jstruct = JSON.parse (body);
+					callback (undefined, jstruct);
+					}
+				catch (err) {
+					callback (err);
+					}
+				}
+			});
+		}
 	function newPost (options, authorization, item, callback) {
 		const url = options.urlsite + "xrpc/com.atproto.repo.createRecord";
 		const nowstring = new Date ().toISOString ();
@@ -140,6 +168,21 @@ function postToBluesky (params, callback) {
 				text: getStatusText (item),
 				createdAt: nowstring,
 				reply: item.reply //6/11/23 by DW
+				}
+			
+			if (item.imagecid !== undefined) {
+				theRecord.embed = {
+					"$type": "app.bsky.embed.images",
+					images: [
+						{
+							image: {
+								cid: item.imagecid,
+								mimeType: item.imagetype
+								},
+							alt: ""
+							}
+						]
+					};
 				}
 			if (notEmpty (item.link)) {
 				const linkword = utils.getDomainFromUrl (item.link);
@@ -200,29 +243,49 @@ function postToBluesky (params, callback) {
 			callback (err);
 			}
 		else {
-			var reply = undefined;
-			if (params.reply !== undefined) {
-				try {
-					reply = JSON.parse (params.reply);
+			function doNewPost (imagecid, imagetype) {
+				var reply = undefined;
+				if (params.reply !== undefined) {
+					try {
+						reply = JSON.parse (params.reply);
+						}
+					catch (err) {
+						}
 					}
-				catch (err) {
+				const item = {
+					title: params.title,
+					description: params.description,
+					link: params.link,
+					reply, //6/11/23 by DW
+					imagecid, imagetype //6/29/23 by DW
 					}
+				newPost (params, authorization, item, function (err, data) {
+					if (err) {
+						console.log ("postToBluesky: err.message == " + err.message);
+						callback (err);
+						}
+					else {
+						callback (undefined, data);
+						}
+					});
 				}
-			const item = {
-				title: params.title,
-				description: params.description,
-				link: params.link,
-				reply //6/11/23 by DW
+			if (params.image !== undefined) { //6/29/23 by DW
+				if (params.imagetype === undefined) {
+					params.imagetype = "image/png";
+					}
+				uploadImage (params, authorization, function (err, data) {
+					if (err) {
+						callback (err);
+						}
+					else {
+						const theCid = data.blob.ref ["$link"];
+						doNewPost (theCid, params.imagetype);
+						}
+					});
 				}
-			newPost (params, authorization, item, function (err, data) {
-				if (err) {
-					console.log ("postToBluesky: err.message == " + err.message);
-					callback (err);
-					}
-				else {
-					callback (undefined, data);
-					}
-				});
+			else {
+				doNewPost ();
+				}
 			}
 		});
 	}
@@ -467,6 +530,25 @@ function postToMastodon (params, callback) {
 		});
 	}
 
+
+function post (servicename, params, callback) { //6/29/23 by DW
+	switch (servicename) {
+		case "mastodon":
+			postToMastodon (params, callback);
+			return (true);
+		case "bluesky":
+			postToBluesky (params, callback);
+			return (true);
+		case "wordpress":
+			postToWordpress (params, callback);
+			return (true);
+		default: 
+			returnNotFound ()
+			return (true);
+		}
+	}
+
+
 function handleHttpRequest (theRequest) {
 	var now = new Date ();
 	const params = theRequest.params;
@@ -522,20 +604,8 @@ function handleHttpRequest (theRequest) {
 	switch (theRequest.method) {
 		case "POST":
 			const postparams = qs.parse (theRequest.postBody);
-			switch (theRequest.lowerpath) {
-				case "/mastodon":
-					postToMastodon (postparams, httpReturn);
-					return (true);
-				case "/bluesky":
-					postToBluesky (postparams, httpReturn);
-					return (true);
-				case "/wordpress":
-					postToWordpress (postparams, httpReturn);
-					return (true);
-				default: 
-					returnNotFound ()
-					return (true);
-				}
+			const servicename = utils.stringDelete (theRequest.lowerpath, 1, 1); //delete / at beginning of path
+			post (servicename, postparams, httpReturn); //6/29/23 by DW
 			break;
 		case "GET":
 			switch (theRequest.lowerpath) {
