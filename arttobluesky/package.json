@@ -1,0 +1,10 @@
+{
+	"name": "arttobluesky",
+	"description": "Use textcasting to post art to Bluesky.",
+	"version": "0.4.0",
+	"main": "arttobluesky.js",
+	"dependencies" : {
+		"daveutils": "*",
+		"textcasting": "*"
+		}
+	}
