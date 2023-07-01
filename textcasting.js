@@ -1,4 +1,4 @@
-const myVersion = "0.4.16", myProductName = "textcasting";  
+const myVersion = "0.4.17", myProductName = "textcasting";  
 
 exports.start = start; 
 exports.post = post; //6/29/23 by DW
@@ -85,11 +85,17 @@ function postToBluesky (params, callback) {
 				}
 			else {
 				try {
-					callback (undefined, JSON.parse (body));
+					jstruct = JSON.parse (body);
+					if (jstruct.error !== undefined) { //6/30/23 by DW
+						callback (jstruct); //it has a message property
+						return;
+						}
 					}
 				catch (err) {
 					callback (err);
+					return;
 					}
+				callback (undefined, jstruct);
 				}
 			});
 		}
@@ -142,6 +148,7 @@ function postToBluesky (params, callback) {
 			return (s);
 			}
 		function getStatusText (item) { //special for bluesky, just get the text, no link
+			const flAddNewlines = false;
 			var statustext = "";
 			function add (s) {
 				statustext += s;
@@ -150,8 +157,12 @@ function postToBluesky (params, callback) {
 				desc = decodeForBluesky (desc); 
 				desc = utils.trimWhitespace (utils.stripMarkup (desc));
 				if (desc.length > 0) {
-					const maxcount = maxCtChars - 2; //the 2 is for the two newlines after the description
-					desc = utils.maxStringLength (desc, maxcount, false, true) + "\n\n";
+					if (flAddNewlines) { //6/29/23 by DW
+						desc = utils.maxStringLength (desc, maxCtChars - 2, false, true) + "\n\n";
+						}
+					else {
+						desc = utils.maxStringLength (desc, maxCtChars, false, true);
+						}
 					add (desc);
 					}
 				}
@@ -203,7 +214,6 @@ function postToBluesky (params, callback) {
 						}
 					];
 				}
-			console.log ("bluesky/getRecord: theRecord == " + utils.jsonStringify (theRecord));
 			return (theRecord);
 			}
 		
@@ -239,7 +249,6 @@ function postToBluesky (params, callback) {
 		}
 	getAccessToken (params, function (err, authorization) {
 		if (err) {
-			console.log ("postToBluesky: err.message == " + err.message);
 			callback (err);
 			}
 		else {
