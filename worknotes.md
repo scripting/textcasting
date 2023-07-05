@@ -1,6 +1,6 @@
 6/30/23; 6:32:12 PM by DW
 
-Catch errors on getting token in Bluesky, produce an error message that makes sense, when the username and password don't validate.
+Catch errors on getting token in Bluesky, produce an error message that makes sense, when the username and password don't validate. 
 
 6/29/23; 2:12:24 PM by DW
 
