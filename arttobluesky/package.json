@@ -5,6 +5,7 @@
 	"main": "arttobluesky.js",
 	"dependencies" : {
 		"daveutils": "*",
+		"request": "*",
 		"textcasting": "*"
 		}
 	}

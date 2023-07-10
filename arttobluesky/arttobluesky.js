@@ -1,11 +1,12 @@
 const fs = require ("fs");
 const utils = require ("daveutils");
+const request = require ("request");
 const textcasting = require ("textcasting");
 
 var config = {
 	artFolder: "/Users/davewiner/github/artDownloader/",
 	jsonFolder: "data/json/",
-	ctMinutesBetwPosts: 15,
+	ctMinutesBetwPosts: 60,
 	extraTags: ""
 	};
 
@@ -31,15 +32,32 @@ function readConfig (f, config, callback) {
 		});
 	}
 
+function readImageFromGithub (fname, callback) { //7/9/23 by DW
+	var url = "https://raw.githubusercontent.com/scripting/artDownloader/main/data/images/" + fname;
+	request ({url, encoding: null}, function (err, response, data) {
+		if (err) {
+			callback (err);
+			}
+		else {
+			if (response.statusCode == 200) {
+				callback (undefined, data);
+				}
+			else {
+				message = "HTTP error code == " + response.statusCode;
+				callback ({message});
+				}
+			}
+		});
+	}
+
 function postRandomArt (thePrefs=config) {
 	globals.whenLastPost = new Date ();
 	const ix = utils.random (0, globals.theArt.length - 1);
 	const jstruct = globals.theArt [ix];
 	
-	const f = config.artFolder + "data/images/" + jstruct.fname;
-	fs.readFile (f, function (err, theImageData) {
+	readImageFromGithub (jstruct.fname, function (err, theImageData) {
 		if (err) {
-			console.log (err.message);
+			console.log ("postRandomArt: err.message == " + err.message);
 			}
 		else {
 			const pattern = /https?:\/\/\S+/g;
@@ -63,8 +81,11 @@ function postRandomArt (thePrefs=config) {
 					console.log (new Date ().toLocaleTimeString () + ": " + params.title);
 					}
 				});
+			fs.writeFile ("img.jpg", theImageData, function (err) { //debugging
+				});
 			}
 		});
+	
 	}
 function everyMinute () {
 	const now = new Date ();
