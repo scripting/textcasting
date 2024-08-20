@@ -4,6 +4,7 @@ const request = require ("request");
 const textcasting = require ("textcasting");
 
 var config = {
+	enabled: true,
 	artFolder: "/Users/davewiner/github/artDownloader/",
 	jsonFolder: "data/json/",
 	ctMinutesBetwPosts: 60,
@@ -88,9 +89,12 @@ function postRandomArt (thePrefs=config) {
 	
 	}
 function everyMinute () {
-	const now = new Date ();
-	if ((now.getMinutes () % config.ctMinutesBetwPosts) == 0) {
-		postRandomArt ();
+	if (config.enabled) { //9/20/23 by DW
+		const now = new Date ();
+		if ((now.getMinutes () % config.ctMinutesBetwPosts) == 0) {
+			console.log ("everyMinute: posting art, now == " + now.toLocaleTimeString ());
+			postRandomArt ();
+			}
 		}
 	}
 
@@ -100,7 +104,7 @@ readConfig ("config.json", config, function () {
 	fs.readFile ("art.json", function (err, jsontext) {
 		globals.theArt = JSON.parse (jsontext);
 		console.log ("globals.theArt.length == " + globals.theArt.length);
-		postRandomArt (); //post one immediately on startup
+		postRandomArt (); //post one immediately on startup 
 		utils.runEveryMinute (everyMinute);
 		})
 	

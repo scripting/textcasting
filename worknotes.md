@@ -1,8 +1,12 @@
-6/30/23; 6:32:12 PM by DW
+#### 8/19/24; 4:36:11 PM by DW -- v0.5.0
+
+I now have the ability to post to Twitter, if you have the patience to set up a developer account. 
+
+#### 6/30/23; 6:32:12 PM by DW
 
 Catch errors on getting token in Bluesky, produce an error message that makes sense, when the username and password don't validate. 
 
-6/29/23; 2:12:24 PM by DW
+#### 6/29/23; 2:12:24 PM by DW
 
 You can now add an image to a post to Bluesky. 
 

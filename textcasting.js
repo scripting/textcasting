@@ -1,4 +1,4 @@
-const myVersion = "0.4.17", myProductName = "textcasting";  
+const myVersion = "0.5.1", myProductName = "textcasting";  
 
 exports.start = start; 
 exports.post = post; //6/29/23 by DW
@@ -11,6 +11,7 @@ const reallysimple = require ("reallysimple");
 const wordpress = require ("wordpress"); 
 const davehttp = require ("davehttp"); 
 const qs = require ("querystring"); 
+const { TwitterApi } = require ('twitter-api-v2');
 
 var config = {
 	userAgent: myProductName + "/" + myVersion,
@@ -539,6 +540,29 @@ function postToMastodon (params, callback) {
 		});
 	}
 
+function postToTwitter (params, callback) { //8/19/24 by DW
+	var tweetText = params.description;
+	if (params.link.length > 0) {
+		tweetText += "\n\n" + params.link;
+		}
+	
+	async function internalCall () {
+		const client = new TwitterApi ({
+			appKey: params.apikey,
+			appSecret: params.apikeysecret,
+			accessToken: params.accesstoken,
+			accessSecret: params.accesstokensecret
+			});
+		try {
+			const tweet = await client.v2.tweet (tweetText);
+			callback (undefined, tweet);
+			} 
+		catch (err) {
+			callback (err);
+			}
+		}
+	internalCall ();
+	}
 
 function post (servicename, params, callback) { //6/29/23 by DW
 	switch (servicename) {
@@ -550,6 +574,9 @@ function post (servicename, params, callback) { //6/29/23 by DW
 			return (true);
 		case "wordpress":
 			postToWordpress (params, callback);
+			return (true);
+		case "twitter": //8/19/24 by DW
+			postToTwitter (params, callback);
 			return (true);
 		default: 
 			returnNotFound ()
