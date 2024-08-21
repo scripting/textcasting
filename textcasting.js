@@ -542,8 +542,11 @@ function postToMastodon (params, callback) {
 
 function postToTwitter (params, callback) { //8/19/24 by DW
 	var tweetText = params.description;
-	if (params.link.length > 0) {
-		tweetText += "\n\n" + params.link;
+	
+	if (params.link !== undefined) {
+		if (params.link.length > 0) {
+			tweetText += "\n\n" + params.link;
+			}
 		}
 	
 	async function internalCall () {
