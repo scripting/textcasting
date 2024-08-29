@@ -1,4 +1,3 @@
-const utils = require ("daveutils"); 
-const textcasting = require ("../textcasting.js");  
+const textcasting = require ("textcasting");  
 
 textcasting.start ();

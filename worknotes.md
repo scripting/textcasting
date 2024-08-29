@@ -1,3 +1,27 @@
+#### 8/29/24; 10:44:49 AM by DW -- v0.6.0
+
+Ready to deploy and document the plugin platform interface.
+
+Got rid of config.flTextcastPostEnabled, i was trying to make it easier to test, but found that I already had local scripts that did a much better job of testing the server. 
+
+#### 8/27/24; 12:49:20 PM by DW
+
+I had a Frontier script for testing the server.
+
+workspace.testTextcasting
+
+That's the easiest way to test by far.
+
+#### 8/26/24; 12:18:37 PM by DW
+
+Added config.flTextcastPostEnabled.
+
+We try to read config.json from the folder the app launches from.
+
+When we try to post, and config.flTextcastPostEnabled. is false, display values of params on console.
+
+Also set config.flPostEnabled to true, because we have to be able to receive POST requests.
+
 #### 8/19/24; 4:36:11 PM by DW -- v0.5.0
 
 I now have the ability to post to Twitter, if you have the patience to set up a developer account. 
