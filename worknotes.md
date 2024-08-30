@@ -1,3 +1,7 @@
+#### 8/30/24; 10:05:33 AM by DW
+
+Updated misc/frontiertest.opml to include improvements I made in the test script. Basically useful to people who have Frontier installed, or as example code for other scripting environments. 
+
 #### 8/29/24; 10:44:49 AM by DW -- v0.6.0
 
 Ready to deploy and document the plugin platform interface.
