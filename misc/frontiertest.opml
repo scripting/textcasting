@@ -2,7 +2,7 @@
 <opml version="2.0">
 	<head>
 		<title>misc/frontiertest.opml</title>
-		<dateModified>Fri, 30 Aug 2024 14:08:07 GMT</dateModified>
+		<dateModified>Fri, 30 Aug 2024 14:10:00 GMT</dateModified>
 		<expansionState></expansionState>
 		<vertScrollState>1</vertScrollState>
 		<windowTop>300</windowTop>
@@ -26,7 +26,7 @@
 				<outline text="params.urlsite = &quot;https://bsky.social/&quot;"></outline>
 				<outline text="params.username = &quot;davew&quot;"></outline>
 				<outline text="params.mailaddress = &quot;dave.winer@gmail.com&quot;"></outline>
-				<outline text="params.password = &quot;exactoknife&quot;"></outline>
+				<outline text="params.password = &quot;xxx&quot;"></outline>
 				<outline created="Sat, 27 May 2023 18:21:53 GMT" text="params.description = &quot;If you wanna feel real nice, just ask the Rock and Roll doctor's advice. &quot;"></outline>
 				<outline created="Sat, 27 May 2023 18:21:53 GMT" isComment="true" text="params.description = &quot;If you like the sound of shufflin' feet he can't be beat&quot;"></outline>
 				<outline created="Sat, 27 May 2023 18:21:53 GMT" isComment="true" text="params.description = &quot;Two degrees in be-bop, a PHD in swing. He's the master of rhythm, he's a rock and roll king, yeah.&quot;"></outline>
@@ -39,10 +39,10 @@
 				<outline created="Sat, 27 May 2023 14:18:27 GMT" text="local (url = &quot;http://localhost:1422/twitter&quot;)"></outline>
 				<outline text="new (tabletype, @params)"></outline>
 				<outline created="Wed, 28 Aug 2024 15:01:56 GMT" text=""></outline>
-				<outline text="params.apikey = &quot;RMdfV45FJuAnv7iEmYvLQe1kU&quot;"></outline>
-				<outline text="params.apikeysecret = &quot;YyuVV6gkqY2I0vW1guAVHa1sw9nwyLsOKC9kLs1DbRZXjInWzq&quot;"></outline>
-				<outline text="params.accesstoken = &quot;3839-IDqcznfdLxnwQ0v8amcs5kVF4MLrjQENDuduF83oKhe0N&quot;"></outline>
-				<outline text="params.accesstokensecret = &quot;F6Hngb891n6WI8pK885p82rB7IlchJBgPjm9O1SHUnQEL&quot;"></outline>
+				<outline text="params.apikey = &quot;xxx&quot;"></outline>
+				<outline text="params.apikeysecret = &quot;xxx&quot;"></outline>
+				<outline text="params.accesstoken = &quot;xxx&quot;"></outline>
+				<outline text="params.accesstokensecret = &quot;xxx&quot;"></outline>
 				<outline created="Wed, 28 Aug 2024 15:01:56 GMT" text=""></outline>
 				<outline text="params.description = &quot;W3C should adopt XML-RPC. It's low-tech, clean, easy to understand, a four-screen spec, widely deployed, transparent, efficient, and most important, it's frozen, not subject to debate. Take it as a whole, without changes.&quot;"></outline>
 				<outline text="params.link = &quot;http://scripting.com/davenet/2000/03/02/theTwowayweb.html&quot;"></outline>
@@ -57,7 +57,7 @@
 				<outline created="Wed, 28 Aug 2024 14:48:17 GMT" text=""></outline>
 				<outline text="params.urlsite = &quot;https://linkblog3.wordpress.com&quot;"></outline>
 				<outline text="params.username = &quot;scripting&quot;"></outline>
-				<outline text="params.password = &quot;nbdf vzea qduk 6bsm&quot;"></outline>
+				<outline text="params.password = &quot;xxx&quot;"></outline>
 				<outline text="params.title = &quot;W3C should adopt XML-RPC&quot;"></outline>
 				<outline text="params.description = &quot;It's low-tech, clean, easy to understand, a four-screen spec, widely deployed, transparent, efficient, and most important, it's frozen, not subject to debate. Take it as a whole, without changes.&quot;"></outline>
 				<outline text="params.link = &quot;http://scripting.com/davenet/2000/03/02/theTwowayweb.html&quot;"></outline>
@@ -68,7 +68,7 @@
 				<outline created="Sat, 27 May 2023 14:18:27 GMT" text="local (url = &quot;http://localhost:1422/mastodon&quot;)"></outline>
 				<outline text="new (tabletype, @params)"></outline>
 				<outline text="params.urlsite = &quot;https://social.masto.land/&quot;"></outline>
-				<outline text="params.accesstoken = &quot;16yuZNrRGehMTgPCsryRiSHm4pUG1ofC1Qv73ShF1Ds&quot;"></outline>
+				<outline text="params.accesstoken = &quot;xxx&quot;"></outline>
 				<outline text="params.title = &quot;Time Loves a Hero (this is a test post)&quot;"></outline>
 				<outline text="params.description = &quot;Well they say time loves a hero, but only time will tell. If he's real he's a legend from heaven, if he ain't he was sent here from hell&quot;"></outline>
 				<outline text="params.link = &quot;https://genius.com/Little-feat-time-loves-a-hero-lyrics&quot;"></outline>
