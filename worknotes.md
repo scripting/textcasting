@@ -1,3 +1,9 @@
+#### 8/30/24; 11:19:47 AM by DW
+
+Getting textcasting ready for a more serious release.
+
+Got a new <a href="https://wordpress.com/me/security/two-step">application password</a> for WordPress, also changed password on Bluesky, got new credentials from Twitter, and a new access token from Mastodon.
+
 #### 8/30/24; 10:05:33 AM by DW
 
 Updated misc/frontiertest.opml to include improvements I made in the test script. Basically useful to people who have Frontier installed, or as example code for other scripting environments. 
