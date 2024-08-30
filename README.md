@@ -12,15 +12,15 @@ It's a good time to do this because there are enough twitter-like systems out th
 
 ### Platform drivers
 
-As of August 2024, there's now a plug-in architecture. Instead of implementing support for each of the platforms in the textcasting.js main file, they are in a folder where you can add new platform support. There are four examples in this repo.
+As of August 2024, there's now a plug-in architecture. 
+
+Instead of implementing support for each of the platforms in the textcasting.js main file, they are in a folder where you can add new platform support. There are four examples in this repo.
 
 You don't have to restart the server to add a new platform driver. 
 
-Here's an <a href="https://github.com/scripting/textcasting/blob/main/plugins/platforms/mastodon/code.js">example</a> of a platform driver. It's a Node.js package that exports a single function --
+Here's an <a href="https://github.com/scripting/textcasting/blob/main/plugins/platforms/mastodon/code.js">example</a> of a platform driver. It's a Node.js package that exports a single function named post that takes two params, an options object and a callback function.
 
-`exports.post = function (options, callback)`
-
-The options object has all the params the plugin needs. Each is different, some require usernames and passwords, some a combination of four access tokens, this is where all the variety in the APIs is flattened out, in the params that are passed via a REST call from the client to the textcasting server. 
+The options object has all the params the plugin needs. Each platform is different, some require usernames and passwords, some a combination of four access tokens. The params  are passed via a REST call from the client to the textcasting server. 
 
 The function calls back with usual two params, err and data, data is whatever the platform sent back to us about the posting of the item. 
 
