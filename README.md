@@ -94,7 +94,7 @@ We need some work on making Twitter work for users, and in both cases, making it
 
 I needed to do the transition to plaform drivers quickly because I'm in the middle of a bunch of other stuff. I wanted to get this out there mostly as a statement of intent, and also because I was tired of manual cross-platform linkblogging. 
 
-Also see my <a href="https://scripting.com/2024/08/31/141919.html?title=plaformDrivers">latest blog post</a> on this project. 
+Also see my <a href="http://scripting.com/2024/08/31/141919.html?title=plaformDrivers">latest blog post</a> on this project. 
 
 Dave Winer
 
