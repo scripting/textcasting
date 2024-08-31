@@ -62,6 +62,8 @@ Other elements of options, provided automatically by textcasting:
 
 * userAgent -- the value from config.userAgent, by default the name and version number of the textcasting app, but this can be overridden in config.json.
 
+This is <a href="https://github.com/scripting/textcasting/blob/main/textcasting.js#L146">where</a> the POST requests are handled. 
+
 ### How to set up a server
 
 I still have to create an installation checklist.
@@ -78,7 +80,7 @@ And then run the app.
 
 ### Where we're at
 
-Setup is a bitch in several cases.
+We need some work on making Twitter work for users, and in both cases, making it economical for developers. Ideally you should be able to just offer software and have all the services users need be provided by other services. Bluesky and WordPress work well, and as far as I can see are ready to go.
 
 1. With Twitter you have to become a developer and not be scared off from terms like apikey, accesstoken. And there is an economic problem. Basically at this time to use this, you have to be a Twitter developer and do some simple setup. It's not technically difficult, just unnecessarily intimidating. I think a certain number of linkblogged posts should come with their $8 monthy subscription, for users -- leave developers out of this loop. Just my two cents. 
 
@@ -86,11 +88,13 @@ Setup is a bitch in several cases.
 
 3. Bluesky and WordPress are easy to set up. They really thought this through, and they aren't restrictive about who gets to be a developer.
 
-5. Threads, for me, has been unapproachable. I've jumped through the hoops with them before, same developer program as Facebook, and that is a graveyard of good ideas for me. And so far Manton has been doing a great job, and we can always hook these things together with RSS (as we do there) and that probably will become the standard imho. 
+4. Threads, for me, has been unapproachable. I've jumped through the hoops with them before, same developer program as Facebook, and that is a graveyard of good ideas for me. And so far Manton has been doing a great job, and we can always hook these things together with RSS (as we do there) and that probably will become the standard imho. 
 
 ### These docs are rough, I know
 
 I needed to do the transition to plaform drivers quickly because I'm in the middle of a bunch of other stuff. I wanted to get this out there mostly as a statement of intent, and also because I was tired of manual cross-platform linkblogging. 
+
+Also see my <a href="https://scripting.com/2024/08/31/141919.html?title=plaformDrivers">latest blog post</a> on this project. 
 
 Dave Winer
 
