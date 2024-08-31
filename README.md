@@ -8,7 +8,23 @@ Think of it as a bridge between web writing tools and various places people want
 
 To make linkblogging across all the twitter-like systems as easy as it can be, based on the features and limits of each platform.
 
-It's a good time to do this because there are enough twitter-like systems out there, and people are manually doing what textcasting does in a way where the computer network does all the work. The cost is there is in all cases a fairly complex setup process. The only way to simplify it is to add a centralized service, but that isn't in the scope of this project.
+It's a good time to do this because there are enough twitter-like systems out there, and people are manually doing what textcasting eventually will do automatically.
+
+### Where we're at
+
+Setup is a bitch in several cases.
+
+1. With Twitter you have to become a developer and not be scared off from terms like xxx, xxx.
+
+2. With Mastodon, you have to operate a gateway server, at least with my very modest understanding of the Mastodon API.
+
+3. Bluesky is easy to set up. They really thought this through, and they aren't restrictive about who gets to be a developer.
+
+4. WordPress is also very easy to set up. They've been running their servers for 20 years, and it's also very well thought-out and not restrictive. 
+
+5. Threads, for me, has been unapproachable. I've jumped through the hoops with them before, same developer program as Facebook, and that is a graveyard of good ideas for me. And so far Manton has been doing a great job, and we can always hook these things together with RSS (as we do there) and that probably will become the standard imho. 
+
+Anyway because Twitter and Masto are unresolved right now, I'm not ready to offer something for end-users. But this is the place where we'll get it working when it does work. This is a framework for open source. The people who do each product ideally should be responsible for the platform driver for that product. 
 
 ### Platform drivers
 
@@ -73,4 +89,12 @@ If you've installed any platform drivers beyond the four that come in the downlo
 At the command line, enter npm install. 
 
 And then run the app. 
+
+### These docs are rough, I know
+
+I needed to do the transition to plaform drivers quickly because I'm in the middle of a bunch of other stuff. I wanted to get this out there mostly as a statement of intent, and also because I was tired of manual cross-platform linkblogging. 
+
+Dave Winer
+
+August 2024
 
