@@ -1,3 +1,11 @@
+#### 8/31/24; 10:54:27 AM by DW
+
+<a href="http://scripting.com/2024/08/31/141919.html">Blog post</a> on scripting.com.
+
+Added a few notes to the main readme for the repo.
+
+Released version 0.6.0 on NPM, running it on my linkblog server.
+
 #### 8/30/24; 11:19:47 AM by DW
 
 Getting textcasting ready for a more serious release.
