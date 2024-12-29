@@ -1,4 +1,4 @@
-const myVersion = "0.6.0", myProductName = "textcasting";  
+const myVersion = "0.6.1", myProductName = "textcasting";  
 
 exports.start = start; 
 exports.post = sendToPlatform; //8/29/24 by DW

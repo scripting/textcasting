@@ -145,7 +145,7 @@ function postToBluesky (options, callback) {
 					};
 				}
 			if (notEmpty (item.link)) {
-				const linkword = utils.getDomainFromUrl (item.link);
+				const linkword = utils.getDomainFromUrl (item.link, false); //12/28/24 by DW
 				theRecord.text += " " + linkword; //8/28/24 by DW -- added space
 				const ctbytes = getStringBytes (theRecord.text); //5/16/23 by DW
 				theRecord.facets = [

@@ -1,3 +1,7 @@
+#### 12/28/24; 1:16:07 PM by DW
+
+In the bluesky driver, change call to utils.getDomainFromUrl to add a boolean which should prevent it from removing www and other unnecessary bits when using the domain to tell the user where the link will take them. bluesky warns the user unnecessarily when we use "hello.com" in place of "www.hello.com."
+
 #### 8/31/24; 10:54:27 AM by DW
 
 <a href="http://scripting.com/2024/08/31/141919.html">Blog post</a> on scripting.com.
