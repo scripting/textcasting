@@ -4,47 +4,115 @@ const fs = require ("fs");
 const request = require ("request");
 const utils = require ("daveutils");
 
+var config = {
+	maxSecsCacheItem: 60 * 59 //expire after 59 minutes
+	};
+
 function getStringBytes (theString) { //5/17/23 by DW
 	const ctbytes = Buffer.byteLength (theString);
 	return (ctbytes);
 	}
 
+//accessToken cache -- 1/1/25 by DW
+	const fnameCache = "data/bluesky/accessTokenCache.json";
+	function removeExpiredCacheItems (theCache) {
+		var theNewCache = new Object ();
+		for (var x in theCache) {
+			const item = theCache [x];
+			if (utils.secondsSince (item.when) <= config.maxSecsCacheItem) {
+				theNewCache [x] = item;
+				}
+			}
+		return (theNewCache);
+		}
+	function readCacheFile (callback) {
+		fs.readFile (fnameCache, function (err, jsontext) {
+			const emptyCache = new Object ();
+			if (err) {
+				console.log ("readCacheFile: err.message == " + err.message);
+				callback (err, emptyCache);
+				}
+			else {
+				var theCache;
+				try {
+					theCache = JSON.parse (jsontext);
+					}
+				catch (err) {
+					console.log ("readCacheFile: err.message == " + err.message);
+					callback (err, emptyCache);
+					return;
+					}
+				theCache = removeExpiredCacheItems (theCache);
+				callback (undefined, theCache);
+				}
+			});
+		}
+	function writeCacheFile (theCache) {
+		utils.sureFilePath (fnameCache, function () {
+			const jsontext = utils.jsonStringify (theCache);
+			fs.writeFile (fnameCache, jsontext, function (err) {
+				if (err) {
+					console.log ("writeCacheFile:  err.message == " + err.message);
+					}
+				});
+			});
+		}
+	
+	
+	
+	
+
 function postToBluesky (options, callback) {
 	const params = options.params;
 	const maxCtChars = 300;
 	function getAccessToken (options, callback) {
-		const url = options.urlsite + "xrpc/com.atproto.server.createSession";
-		const bodystruct = {
-			identifier: options.mailaddress,
-			password: options.password
-			};
-		var theRequest = {
-			method: "POST",
-			url: url,
-			body: utils.jsonStringify (bodystruct),
-			headers: {
-				"User-Agent": options.userAgent,
-				"Content-Type": "application/json"
-				}
-			};
-		request (theRequest, function (err, response, body) { 
-			var jstruct = undefined;
-			if (err) {
-				callback (err);
+		readCacheFile (function (err, theCache) { //1/1/25 by DW
+			if (theCache [options.mailaddress] !== undefined) { //1/1/25 by DW
+				console.log ("getAccessToken: using the cache. options.mailaddress == " + options.mailaddress);
+				callback (undefined, theCache [options.mailaddress].jstruct);
 				}
 			else {
-				try {
-					jstruct = JSON.parse (body);
-					if (jstruct.error !== undefined) { //6/30/23 by DW
-						callback (jstruct); //it has a message property
-						return;
+				const url = options.urlsite + "xrpc/com.atproto.server.createSession";
+				const bodystruct = {
+					identifier: options.mailaddress,
+					password: options.password
+					};
+				var theRequest = {
+					method: "POST",
+					url: url,
+					body: utils.jsonStringify (bodystruct),
+					headers: {
+						"User-Agent": options.userAgent,
+						"Content-Type": "application/json"
 						}
-					}
-				catch (err) {
-					callback (err);
-					return;
-					}
-				callback (undefined, jstruct);
+					};
+				request (theRequest, function (err, response, body) { 
+					var jstruct = undefined;
+					if (err) {
+						callback (err);
+						}
+					else {
+						try {
+							jstruct = JSON.parse (body);
+							if (jstruct.error !== undefined) { //6/30/23 by DW
+								callback (jstruct); //it has a message property
+								return;
+								}
+							}
+						catch (err) {
+							callback (err);
+							return;
+							}
+						
+						theCache [options.mailaddress] = {
+							when: new Date (),
+							jstruct
+							};
+						writeCacheFile (theCache);
+						
+						callback (undefined, jstruct);
+						}
+					});
 				}
 			});
 		}
