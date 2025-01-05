@@ -198,16 +198,21 @@ function postToBluesky (options, callback) {
 				reply: item.reply //6/11/23 by DW
 				}
 			
-			if (item.imagecid !== undefined) {
-				theRecord.embed = {
+			if (item.imagecid !== undefined) { //1/5/25 by DW
+				var altText = (item.description === undefined) ? "" : item.description;
+				theRecord.embed = { //1/5/25 by DW
 					"$type": "app.bsky.embed.images",
 					images: [
 						{
+							alt: altText,
 							image: {
-								cid: item.imagecid,
-								mimeType: item.imagetype
-								},
-							alt: ""
+								"$type": "blob",
+								"ref": {
+									"$link": item.imagecid
+									},
+								"mimeType": item.imagetype,
+								"size": item.imagesize || 0 // Provide the image size if available
+								}
 							}
 						]
 					};

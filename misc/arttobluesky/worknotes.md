@@ -1,3 +1,7 @@
+#### 1/5/25; 12:04:57 PM by DW
+
+May have fixed image uploading. Let's see. 
+
 #### 8/30/24; 9:49:35 AM by DW 
 
 Save this to the misc folder on the github repo.

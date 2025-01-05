@@ -1,3 +1,11 @@
+#### 1/5/25; 11:49:06 AM by DW -- v0.6.3
+
+Finally got images in bluesky to work again, I was just able to post a tweet to bluesky with an image.
+
+https://bsky.app/profile/feedland.bsky.social/post/3lez2rfbxfp2n
+
+To see the fix look in getRecord in the bluesky plugin code (just search for 1/5/25 in the source).
+
 #### 1/1/25; 9:33:38 AM by DW
 
 For Bluesky, use a cache to store the accessTokens. Reduce rate-limit errors. 
