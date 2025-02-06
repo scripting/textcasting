@@ -236,6 +236,7 @@ function postToBluesky (options, callback) {
 						}
 					];
 				}
+			console.log ("bluesky/getRecord: theRecord == " + utils.jsonStringify (theRecord));
 			return (theRecord);
 			}
 		
