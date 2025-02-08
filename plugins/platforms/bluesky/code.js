@@ -2,12 +2,66 @@ exports.post = postToBluesky;
 
 const fs = require ("fs");
 const request = require ("request");
+const ogs = require ("open-graph-scraper"); //2/8/25 by DW
 const utils = require ("daveutils");
 
 var config = {
 	maxSecsCacheItem: 60 * 59 //expire after 59 minutes
 	};
 
+function httpReadUrl (url, callback) { //2/8/25 by DW
+	request (url, function (err, response, data) {
+		if (err) {
+			callback (err);
+			}
+		else {
+			if (response.statusCode != 200) {
+				const errstruct = {
+					message: "Can't read the URL, \"" + url + "\" because we received a status code of " + response.statusCode + ".",
+					statusCode: response.statusCode
+					};
+				callback (errstruct);
+				}
+			else {
+				callback (undefined, data);
+				}
+			}
+		});
+	}
+function getOpenGraphData (url, callback) { //2/8/25 by DW
+	httpReadUrl (url, function (err, htmltext) {
+		if (err) {
+			callback (err);
+			}
+		else {
+			const options = {
+				html: htmltext
+				};
+			ogs (options, function (err, results, response) {
+				if (err) {
+					callback (err);
+					}
+				else {
+					var urlImage = undefined;
+					if (results.data.ogImage !== undefined) {
+						if (results.data.ogImage.url !== undefined) {
+							urlImage = results.data.ogImage.url
+							}
+						}
+					const metadata = {
+						title: results.data.ogTitle,
+						description: results.data.ogDescription,
+						url: results.data.ogUrl,
+						urlImage,
+						type: results.data.ogType,
+						sitename: results.data.ogSiteName
+						};
+					callback (undefined, metadata);
+					}
+				});
+			}
+		});
+	}
 function getStringBytes (theString) { //5/17/23 by DW
 	const ctbytes = Buffer.byteLength (theString);
 	return (ctbytes);
@@ -63,6 +117,11 @@ function getStringBytes (theString) { //5/17/23 by DW
 	
 
 function postToBluesky (options, callback) {
+	
+	const userAgent = options.userAgent; //2/8/25 by DW
+	const folder = options.folder; 
+	const platformname = options.platformname; 
+	
 	const params = options.params;
 	const maxCtChars = 300;
 	function getAccessToken (options, callback) {
@@ -301,22 +360,113 @@ function postToBluesky (options, callback) {
 						}
 					});
 				}
-			if (params.image !== undefined) { //6/29/23 by DW
-				if (params.imagetype === undefined) {
-					params.imagetype = "image/png";
+			
+			function isOpenGraphPost (params, metadata) {
+				console.log ("isOpenGraphPost");
+				const theRequest = {
+					url: metadata.urlImage,
+					encoding: null
 					}
-				uploadImage (params, authorization, function (err, data) {
+				httpReadUrl (theRequest, function (err, data) { //get the image from the open graph data
 					if (err) {
 						callback (err);
 						}
 					else {
-						const theCid = data.blob.ref ["$link"];
-						doNewPost (theCid, params.imagetype);
+						console.log ("metadata.urlImage == " + metadata.urlImage);
+						const imagetype = utils.httpExt2MIME (utils.stringLastField (metadata.urlImage, ".")); 
+						const options = {
+							urlsite: params.urlsite,
+							image: data,
+							userAgent,
+							imagetype
+							};
+						uploadImage (options, authorization, function (err, theBlob) {
+							if (err) {
+								callback (err);
+								}
+							else {
+								const apiUrl = params.urlsite + "xrpc/com.atproto.repo.createRecord";
+								
+								const bodystruct = {
+									repo: authorization.did,
+									collection: "app.bsky.feed.post",
+									validate: true,
+									record: {
+										text: params.title,
+										$type: "app.bsky.feed.post",
+										embed: {
+											$type: "app.bsky.embed.external",
+											external: {
+												uri: metadata.url,
+												thumb: theBlob.blob,
+												title: metadata.title,
+												description: metadata.description
+												}
+											},
+										createdAt: new Date ().toISOString ()
+										}
+									};
+								var theRequest = {
+									method: "POST",
+									url: apiUrl,
+									body: utils.jsonStringify (bodystruct),
+									headers: {
+										"User-Agent": userAgent,
+										"Content-Type": "application/json",
+										Authorization: "Bearer " + authorization.accessJwt
+										}
+									};
+								request (theRequest, function (err, response, body) { 
+									if (err) {
+										callback (err);
+										}
+									else {
+										try {
+											callback (undefined, JSON.parse (body));
+											}
+										catch (err) {
+											callback (err);
+											}
+										}
+									});
+								}
+							});
+						}
+					});
+				
+				}
+			function notOpenGraphPost (params) {
+				console.log ("notOpenGraphPost");
+				if (params.image !== undefined) { //6/29/23 by DW
+					if (params.imagetype === undefined) {
+						params.imagetype = "image/png";
+						}
+					uploadImage (params, authorization, function (err, data) {
+						if (err) {
+							callback (err);
+							}
+						else {
+							const theCid = data.blob.ref ["$link"];
+							doNewPost (theCid, params.imagetype);
+							}
+						});
+					}
+				else {
+					doNewPost ();
+					}
+				}
+			if (params.link !== undefined) { //2/8/25 by DW
+				getOpenGraphData (params.link, function (err, metadata) {
+					if (err) { //no opengraph metadata
+						notOpenGraphPost (params);
+						}
+					else {
+						isOpenGraphPost (params, metadata);
 						}
 					});
 				}
 			else {
-				doNewPost ();
+				notOpenGraphPost (params);
 				}
 			}
 		});

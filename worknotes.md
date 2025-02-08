@@ -1,3 +1,15 @@
+#### 2/8/25; 10:30:15 AM by DW -- how to test
+
+How to test. 
+
+Open the testing folder.
+
+Run test.js.
+
+You can add code in there to try sending different kinds of posts and step through them in the debugger.
+
+Finally a rational way to test this stuff. 
+
 #### 1/5/25; 11:49:06 AM by DW -- v0.6.3
 
 Finally got images in bluesky to work again, I was just able to post a tweet to bluesky with an image.
