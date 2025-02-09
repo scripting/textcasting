@@ -66,6 +66,20 @@ function getStringBytes (theString) { //5/17/23 by DW
 	const ctbytes = Buffer.byteLength (theString);
 	return (ctbytes);
 	}
+function getTypeFromUrl (originalUrl) { //2/9/25 by DW
+	const url = utils.stringNthField (originalUrl, "?", 1); //remove search args
+	const ext = utils.stringLastField (url, ".");
+	const type = utils.httpExt2MIME (ext);
+	return (type);
+	}
+function decodeForBluesky (s) { //2/9/25 by DW
+	s = utils.decodeXml (s); //5/20/23 by DW
+	var replacetable = { 
+		"#39": "'"
+		};
+	s = utils.multipleReplaceAll (s, replacetable, true, "&", ";");
+	return (s);
+	}
 
 //accessToken cache -- 1/1/25 by DW
 	const fnameCache = "data/bluesky/accessTokenCache.json";
@@ -124,10 +138,10 @@ function postToBluesky (options, callback) {
 	
 	const params = options.params;
 	const maxCtChars = 300;
+	
 	function getAccessToken (options, callback) {
 		readCacheFile (function (err, theCache) { //1/1/25 by DW
 			if (theCache [options.mailaddress] !== undefined) { //1/1/25 by DW
-				console.log ("getAccessToken: using the cache. options.mailaddress == " + options.mailaddress);
 				callback (undefined, theCache [options.mailaddress].jstruct);
 				}
 			else {
@@ -214,14 +228,6 @@ function postToBluesky (options, callback) {
 				return (false);
 				}
 			return (true);
-			}
-		function decodeForBluesky (s) {
-			s = utils.decodeXml (s); //5/20/23 by DW
-			var replacetable = { 
-				"#39": "'"
-				};
-			s = utils.multipleReplaceAll (s, replacetable, true, "&", ";");
-			return (s);
 			}
 		function getStatusText (item) { //special for bluesky, just get the text, no link
 			const flAddNewlines = false;
@@ -378,7 +384,7 @@ function postToBluesky (options, callback) {
 							urlsite: params.urlsite,
 							image: data,
 							userAgent,
-							imagetype
+							imagetype: getTypeFromUrl (metadata.urlImage) //2/9/25 by DW
 							};
 						uploadImage (options, authorization, function (err, theBlob) {
 							if (err) {
@@ -392,7 +398,7 @@ function postToBluesky (options, callback) {
 									collection: "app.bsky.feed.post",
 									validate: true,
 									record: {
-										text: params.title,
+										text: decodeForBluesky (params.title),
 										$type: "app.bsky.feed.post",
 										embed: {
 											$type: "app.bsky.embed.external",
@@ -433,7 +439,6 @@ function postToBluesky (options, callback) {
 							});
 						}
 					});
-				
 				}
 			function notOpenGraphPost (params) {
 				console.log ("notOpenGraphPost");

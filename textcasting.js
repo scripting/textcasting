@@ -44,7 +44,6 @@ function writeStats () {
 		});
 	}
 
-
 function sendToPlatform (platformname, params, callback) { //8/28/24 by DW
 	const folder = config.pluginsFolder + "platforms/" + platformname + "/";
 	const codefile = folder + "code.js";

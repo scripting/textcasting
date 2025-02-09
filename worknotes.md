@@ -1,3 +1,7 @@
+#### 2/9/25; 9:55:15 AM by DW
+
+I added support for open graph metadata. You have to cook your own support for this in Bluesky. I didn't try to reuse all the code that sends a post to Bluesky, so there is some replication. I had to do this quickly. In the process however, I made it much easier to test it. See the previous worknote.
+
 #### 2/8/25; 10:30:15 AM by DW -- how to test
 
 How to test. 
