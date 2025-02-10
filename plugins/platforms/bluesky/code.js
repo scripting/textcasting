@@ -80,6 +80,15 @@ function decodeForBluesky (s) { //2/9/25 by DW
 	s = utils.multipleReplaceAll (s, replacetable, true, "&", ";");
 	return (s);
 	}
+function notEmpty (s) { //2/10/25 by DW
+	if (s === undefined) {
+		return (false);
+		}
+	if (s.length == 0) {
+		return (false);
+		}
+	return (true);
+	}
 
 //accessToken cache -- 1/1/25 by DW
 	const fnameCache = "data/bluesky/accessTokenCache.json";
@@ -189,6 +198,33 @@ function postToBluesky (options, callback) {
 				}
 			});
 		}
+	function getStatusText (item) { //special for bluesky, just get the text, no link
+		const flAddNewlines = false;
+		var statustext = "";
+		function add (s) {
+			statustext += s;
+			}
+		function addText (desc) {
+			desc = decodeForBluesky (desc); 
+			desc = utils.trimWhitespace (utils.stripMarkup (desc));
+			if (desc.length > 0) {
+				if (flAddNewlines) { //6/29/23 by DW
+					desc = utils.maxStringLength (desc, maxCtChars - 2, false, true) + "\n\n";
+					}
+				else {
+					desc = utils.maxStringLength (desc, maxCtChars, false, true);
+					}
+				add (desc);
+				}
+			}
+		if (notEmpty (item.title)) {
+			addText (item.title);
+			}
+		else {
+			addText (item.description);
+			}
+		return (statustext);
+		}
 	function uploadImage (options, authorization, callback) {
 		const url = options.urlsite + "xrpc/com.atproto.repo.uploadBlob";
 		var theRequest = {
@@ -220,42 +256,6 @@ function postToBluesky (options, callback) {
 		const url = options.urlsite + "xrpc/com.atproto.repo.createRecord";
 		const nowstring = new Date ().toISOString ();
 		
-		function notEmpty (s) {
-			if (s === undefined) {
-				return (false);
-				}
-			if (s.length == 0) {
-				return (false);
-				}
-			return (true);
-			}
-		function getStatusText (item) { //special for bluesky, just get the text, no link
-			const flAddNewlines = false;
-			var statustext = "";
-			function add (s) {
-				statustext += s;
-				}
-			function addText (desc) {
-				desc = decodeForBluesky (desc); 
-				desc = utils.trimWhitespace (utils.stripMarkup (desc));
-				if (desc.length > 0) {
-					if (flAddNewlines) { //6/29/23 by DW
-						desc = utils.maxStringLength (desc, maxCtChars - 2, false, true) + "\n\n";
-						}
-					else {
-						desc = utils.maxStringLength (desc, maxCtChars, false, true);
-						}
-					add (desc);
-					}
-				}
-			if (notEmpty (item.title)) {
-				addText (item.title);
-				}
-			else {
-				addText (item.description);
-				}
-			return (statustext);
-			}
 		function getRecord (item) {
 			var theRecord = {
 				text: getStatusText (item),
@@ -398,7 +398,7 @@ function postToBluesky (options, callback) {
 									collection: "app.bsky.feed.post",
 									validate: true,
 									record: {
-										text: decodeForBluesky (params.title),
+										text: getStatusText (params), //2/10/25 by DW
 										$type: "app.bsky.feed.post",
 										embed: {
 											$type: "app.bsky.embed.external",
@@ -422,6 +422,7 @@ function postToBluesky (options, callback) {
 										Authorization: "Bearer " + authorization.accessJwt
 										}
 									};
+								console.log ("isOpenGraphPost: bodystruct == " + utils.jsonStringify (bodystruct));
 								request (theRequest, function (err, response, body) { 
 									if (err) {
 										callback (err);
