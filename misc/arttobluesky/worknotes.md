@@ -1,6 +1,26 @@
+#### 6/10/25; 9:30:29 AM by DW
+
+Introducing the daily art feed.
+
+Add source:self to the hourly feed.
+
+#### 6/7/25; 9:23:39 AM by DW
+
+Get the RSS feed ready to work with the timeline.
+
+Added channel-level image element.
+
+#### 5/15/25; 8:31:37 AM by DW
+
+Let's also put out an RSS feed.
+
+http://scripting.com/artToBluesky/rss.xml
+
+http://scripting.com/artToBluesky/rss.json
+
 #### 1/5/25; 12:04:57 PM by DW
 
-May have fixed image uploading. Let's see. 
+May have fixed image uploading. Let's see.  
 
 #### 8/30/24; 9:49:35 AM by DW 
 

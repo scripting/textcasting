@@ -1,16 +1,16 @@
 # textcasting
 
-An HTTP server that can post messages to Mastodon, Bluesky and WordPress via REST call. 
+An HTTP server that can post messages to Mastodon, Bluesky, Twitter and WordPress via REST call. 
 
 Think of it as a bridge between web writing tools and various places people want to post their writing to.
+
+It has a plug-in architecture, so you don't have to mess with the code to add support for other social web systems.
 
 ### Goal
 
 To make linkblogging across all the twitter-like systems as easy as it can be, based on the features and limits of each platform.
 
 It's a good time to do this because there are enough twitter-like systems out there, and people are manually doing what textcasting eventually will do automatically.
-
-Anyway because Twitter and Masto are unresolved right now, I'm not ready to offer something for end-users. But this is the place where we'll get it working when it does work. This is a framework for open source. The people who do each product ideally should be responsible for the platform driver for that product. 
 
 ### Platform drivers
 
@@ -89,6 +89,8 @@ We need some work on making Twitter work for users, and in both cases, making it
 3. Bluesky and WordPress are easy to set up. They really thought this through, and they aren't restrictive about who gets to be a developer.
 
 4. Threads, for me, has been unapproachable. I've jumped through the hoops with them before, same developer program as Facebook, and that is a graveyard of good ideas for me. And so far Manton has been doing a great job, and we can always hook these things together with RSS (as we do there) and that probably will become the standard imho. 
+
+Anyway because Twitter and Masto are unresolved right now, I'm not ready to offer something for end-users. But this is the place where we'll get it working when it does work. This is a framework for open source. The people who do each product ideally should be responsible for the platform driver for that product. 
 
 ### These docs are rough, I know
 
