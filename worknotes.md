@@ -1,6 +1,16 @@
+#### 6/28/25; 6:08:12 PM by DW -- v0.6.5
+
+Encountered a problem with opengraph implementation in the bluesky driver. 
+
+If a site has metadata but it doesn't include an image, we call that an error and throw out the whole request. 
+
+The code under that is very complex, and I don't have the time to dig into it, so I just called it a non-opengraph post.
+
+The net effect of it is that in order for it to be recognized here it must have an image we can read.
+
 #### 2/9/25; 9:55:15 AM by DW
 
-I added support for open graph metadata. You have to cook your own support for this in Bluesky. I didn't try to reuse all the code that sends a post to Bluesky, so there is some replication. I had to do this quickly. In the process however, I made it much easier to test it. See the previous worknote.
+I added support for open graph metadata. You have to cook your own support for this in Bluesky. I didn't try to reuse all the code that sends a post to Bluesky, so there is some replication. I had to do this quickly. In the process however, I made it much easier to test it. See the previous worknote. 
 
 #### 2/8/25; 10:30:15 AM by DW -- how to test
 

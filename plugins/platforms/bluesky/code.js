@@ -467,7 +467,12 @@ function postToBluesky (options, callback) {
 						notOpenGraphPost (params);
 						}
 					else {
-						isOpenGraphPost (params, metadata);
+						if (metadata.urlImage === undefined) { //6/28/25 by DW
+							notOpenGraphPost (params);
+							}
+						else {
+							isOpenGraphPost (params, metadata);
+							}
 						}
 					});
 				}
